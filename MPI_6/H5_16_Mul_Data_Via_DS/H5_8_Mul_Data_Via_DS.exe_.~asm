@@ -1,0 +1,34 @@
+CODE    SEGMENT ;Segment Declaration
+
+ASSUME CS:CODE,DS:CODE ;Assume CODE As CS(Code Segment)-->Directly Loaded(Along With SS)
+;And DS(Data Segemnt)-->Not Loaded(Along With ES)
+
+N1 DW 9999H;User Defined N1 Variable Which Is Word Type Has 9999H Value
+N2 DW 8888H;User Defined N2 Variable Which Is Word Type Has 8888H Value
+N3 DD ?;;User Defined N3 Variable Which Is Dobule Type(4 Byte) Has No Value
+
+;For Initializing Data Segment
+START:  MOV AX,CODE ;Storing Offset Address Of Code In AX
+MOV DS,AX ;Moving Address OF Code To DS To Load Data Segment
+
+MOV AX,N1
+MUL N2 ;Directly Multiplies N2 With AX Which Has Value Of N1
+
+;We Will Be Using Pointer For Storing 32 Bit Data
+;Alternatively We Can Store It In 2 Diffrent Segments
+MOV SI,OFFSET N3;We Can Either Use BX,SI,DI As Pointer For Indirect Addressing Mode
+MOV [SI],AX;Storing Lower Value Of Product In N3
+MOV [SI+2],DX;Storing Upper Value Of Product In N3
+
+;Terminating DOS?? Function By Making AX=4C00H
+;09H Display Screen Function
+MOV AX,4C00H ;Replacing Value At AX With 4C00H
+INT 21H ;Interrupt Function
+
+CODE    ENDS
+
+END START
+
+
+
+; [SOURCE]: C:\emu8086\MySource\H5_8_Mul_Data_Via_DS\H5_8_Mul_Data_Via_DS.asm
